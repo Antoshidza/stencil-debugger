@@ -91,21 +91,7 @@ namespace StencilDebugger
                     });
                 }
 
-                // 2. Compose.
-                // -> Compose stencil texture with scene.
-                using (var builder = renderGraph.AddRasterRenderPass<PassData>(ShaderPassName.Compose, out _, profilingSampler))
-                {
-                    builder.UseTexture(debugHandle);
-                    builder.SetRenderAttachment(resourceData.activeColorTexture, 0);
-
-                    builder.AllowPassCulling(false);
-                    builder.AllowGlobalStateModification(false);
-
-                    builder.SetRenderFunc((PassData _, RasterGraphContext context) =>
-                    {
-                        Blitter.BlitTexture(context.cmd, debugHandle, new Vector4(1, 1, 0, 0), 0, false);
-                    });
-                }
+                resourceData.cameraColor = debugHandle;
             }
 #endif
             private RTHandle cameraDepthRTHandle;
