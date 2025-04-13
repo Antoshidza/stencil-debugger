@@ -35,12 +35,14 @@ static uint bits[5] = {
 // https://gist.github.com/FreyaHolmer/71717be9f3030c1b0990d3ed1ae833e3
 float draw_digit(int2 px, const int digit)
 {
-    if (px.x < 0 || px.x > 2 || px.y < 0 || px.y > 4) {
+    if (px.x < 0 || px.x > 2 || px.y < 0 || px.y > 4)
         return 0;
+    // unnecessary else to calm down hlsl compiler warning X4000: use of potentially uninitialized variable 
+    else
+    {
+        const int id = digit == -1 ? 18 : 31 - (3 * digit + px.x);
+        return (bits[4 - px.y] & 1 << id) != 0;
     }
-
-    const int id = digit == -1 ? 18 : 31 - (3 * digit + px.x);
-    return (bits[4 - px.y] & 1 << id) != 0;
 }
 
 [numthreads(8, 8, 1)]
